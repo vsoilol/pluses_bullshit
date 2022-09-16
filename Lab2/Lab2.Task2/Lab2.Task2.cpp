@@ -13,8 +13,8 @@ int main(int argc, char* argv[])
 {
     int ROWS, COLS;
 
-    const int MIN = -10;
-    const int MAX = 10;
+    const int MIN = 1;
+    const int MAX = 9;
 
     srand(time(nullptr));
 
@@ -24,17 +24,10 @@ int main(int argc, char* argv[])
     cout << "Enter column number: ";
     cin >> COLS;
 
-    /*int** matrix = new int*[ROWS]{
-        new int[]{1, 2, 3},
-        new int[]{4, 5, 6},
-        new int[]{7, 8, 9},
-        new int[]{10, 11, 12},
-    };*/
-
     int** firstMatrix = allocateMatrix(ROWS, COLS);
     setRandomNumbersToMatrix(firstMatrix, ROWS, COLS, MIN, MAX);
 
-    cout << "First matrix:\n";
+    cout << "\nFirst matrix:\n";
     cout << matrixToString(firstMatrix, ROWS, COLS);
 
     int** secondMatrix = allocateMatrix(ROWS, COLS);
@@ -43,16 +36,25 @@ int main(int argc, char* argv[])
     cout << "\nSecond matrix:\n";
     cout << matrixToString(secondMatrix, ROWS, COLS);
 
-    /*cout << matrixToString(matrix, ROWS, COLS) << endl << endl;
+    int** firstTransposeMatrix = transposeMatrix(firstMatrix, ROWS, COLS);
+    int** secondTransposeMatrix = transposeMatrix(secondMatrix, ROWS, COLS);
 
-    int** transparateMatrix = transposeMatrix(matrix, ROWS, COLS);
-    cout << matrixToString(transparateMatrix, COLS, ROWS);*/
+    cout << "\nFirst transpose matrix:\n";
+    cout << matrixToString(firstTransposeMatrix, COLS, ROWS);
+
+    cout << "\nSecond transpose matrix:\n";
+    cout << matrixToString(secondTransposeMatrix, COLS, ROWS);
+
+    int** matrixSum = addMatrix(firstTransposeMatrix, secondTransposeMatrix, COLS, ROWS);
+
+    cout << "\nTranspose matrix sum:\n";
+    cout << matrixToString(matrixSum, COLS, ROWS);
 
     deAllocateMatrix(firstMatrix, ROWS);
-    //deAllocateMatrix(secondMatrix, ROWS);
-
-    getchar();
-    getchar();
+    deAllocateMatrix(secondMatrix, ROWS);
+    deAllocateMatrix(firstTransposeMatrix, COLS);
+    deAllocateMatrix(secondTransposeMatrix, COLS);
+    deAllocateMatrix(matrixSum, COLS);
 
     return 0;
 }
@@ -149,15 +151,7 @@ int** transposeMatrix(int** matrix, const int ROWS, const int COLS)
 
 int** addMatrix(int** matrixA, int** matrixB, const int ROWS, const int COLS)
 {
-    int** matrixC = NULL;
-    matrixC = allocateMatrix(ROWS, COLS);
-
-    int* colPtrA = NULL;
-    int* colPtrB = NULL;
-    int* colPtrC = NULL;
-    int* endColPtrA = NULL;
-    int* endColPtrB = NULL;
-    int* endColPtrC = NULL;
+    int** matrixC = allocateMatrix(ROWS, COLS);
 
     int** rowPtrA = matrixA;
     int** rowPtrB = matrixB;
@@ -168,13 +162,13 @@ int** addMatrix(int** matrixA, int** matrixB, const int ROWS, const int COLS)
 
     while ((rowPtrA < endRowPtrA) && (rowPtrB < endRowPtrB) && (rowPtrC < endRowPtrC))
     {
-        endColPtrA = *rowPtrA + COLS;
-        endColPtrB = *rowPtrB + COLS;
-        endColPtrC = *rowPtrC + COLS;
+        int* endColPtrA = *rowPtrA + COLS;
+        int* endColPtrB = *rowPtrB + COLS;
+        int* endColPtrC = *rowPtrC + COLS;
 
-        colPtrA = *rowPtrA;
-        colPtrB = *rowPtrB;
-        colPtrC = *rowPtrC;
+        int* colPtrA = *rowPtrA;
+        int* colPtrB = *rowPtrB;
+        int* colPtrC = *rowPtrC;
 
         while ((colPtrA < endColPtrA) && (colPtrB < endColPtrB) && (colPtrC < endColPtrC))
         {
