@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <iostream>
 #include <string>
 #include <sstream>
@@ -12,7 +13,10 @@ int countWords(string str)
     int count = 0;
     while (s >> word)
     {
-        count++;
+        if(all_of( word.begin(), word.end(), isupper))
+        {
+            count++;
+        }
     }
 
     return count;
